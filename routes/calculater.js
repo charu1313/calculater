@@ -65,4 +65,19 @@ router.get(
         res.json(history);
     });
 
+router.delete(
+    "/history",
+    async (req, res) => {
+        try {
+            if (isDbConnected()) {
+                await History.deleteMany({});
+            } else {
+                inMemoryHistory.length = 0;
+            }
+            res.json({ message: "History cleared successfully" });
+        } catch (error) {
+            res.status(500).json({ message: "Failed to clear history" });
+        }
+    });
+
 module.exports = router;
